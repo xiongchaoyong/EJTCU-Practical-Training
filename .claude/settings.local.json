@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)",
+      "Bash(npm --version)",
+      "Bash(brew install:*)",
+      "Bash(npm install:*)",
+      "Bash(npm --prefix /Users/x/Desktop/未完待续/实训/frontend install)",
+      "Bash(uvicorn main:app:*)",
+      "Bash(npm:*)",
+      "Bash(curl -s http://127.0.0.1:8000/)",
+      "Bash(curl -s -o /dev/null -w \"HTTP Status: %{http_code}\" http://localhost:3000)",
+      "Bash(open:*)",
+      "Bash(curl:*)",
+      "Bash(lsof -ti:8000)",
+      "Bash(lsof -ti:3000)",
+      "Bash(kill -9 6579 6620 63734)",
+      "Bash(find:*)",
+      "Bash(python main.py)"
+    ]
+  }
+}

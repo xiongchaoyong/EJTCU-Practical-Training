@@ -1,0 +1,20 @@
+# Secrets
+.encryption_key
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Database
+*.db
+
+# Frontend
+node_modules/
+.vite/
+dist/
+
+# System
+.DS_Store
