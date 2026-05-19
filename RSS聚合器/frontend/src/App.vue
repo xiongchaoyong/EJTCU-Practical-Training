@@ -57,11 +57,13 @@
 
     <!-- RSS 源管理抽屉 -->
     <SourceManager
+      v-if="showSourceDrawer"
       v-model:visible="showSourceDrawer"
       @sources-changed="checkAIConfig" />
 
     <!-- 抓取任务弹窗 -->
     <FetchTrigger
+      v-if="showFetchDialog"
       v-model:visible="showFetchDialog"
       @done="onFetchDone" />
   </div>

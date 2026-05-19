@@ -5,7 +5,6 @@
     title="抓取与总结"
     width="560px"
     :close-on-click-modal="false"
-    destroy-on-close
     @closed="resetState">
 
     <!-- 初始状态：触发按钮 -->
@@ -44,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { triggerFetch, getTaskStatus } from '../api/index.js'
 
 const props = defineProps({ visible: Boolean })
@@ -115,6 +114,10 @@ function closeAndDone() {
   emit('update:visible', false)
   resetState()
 }
+
+onUnmounted(() => {
+  clearInterval(pollTimer)
+})
 </script>
 
 <style scoped>

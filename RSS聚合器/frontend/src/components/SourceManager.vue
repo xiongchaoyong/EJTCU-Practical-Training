@@ -5,8 +5,6 @@
     title="RSS 源管理"
     direction="rtl"
     size="720px"
-    destroy-on-close
-
     <!-- 手动添加 -->
     <div class="add-section">
       <el-input v-model="newName" placeholder="源名称" style="width: 200px; margin-right: 8px" />
@@ -78,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   listSources, createSource, updateSource, deleteSource,
@@ -225,11 +223,9 @@ async function bulkAdd() {
   }
 }
 
-watch(() => props.visible, (v) => {
-  if (v) {
-    loadSources()
-    loadRecommendations()
-  }
+onMounted(() => {
+  loadSources()
+  loadRecommendations()
 })
 </script>
 
