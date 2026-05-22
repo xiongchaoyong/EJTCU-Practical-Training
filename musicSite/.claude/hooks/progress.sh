@@ -32,7 +32,10 @@ if [ -z "$DIFF_STAT" ] && [ -z "$UNTRACKED" ]; then
   exit 0
 fi
 
-# 3. Generate a one-line summary from changed files
+# 3. Get today's commit messages for description (exclude auto-progress commits)
+TODAY_COMMITS=$(git log --since="today 00:00" --format="%s" 2>/dev/null | grep -v "自动记录项目进度" || true)
+
+# 4. Get changed file names as fallback
 FILES=$(git diff --cached --name-only 2>/dev/null | head -5 | tr '\n' ', ' | sed 's/,$//')
 if [ -z "$FILES" ]; then
   FILES=$(git diff --name-only 2>/dev/null | head -5 | tr '\n' ', ' | sed 's/,$//')
@@ -41,20 +44,27 @@ if [ -z "$FILES" ]; then
   FILES="untracked files"
 fi
 
-# 4. Append to PROGRESS.md (avoid duplicate entries)
-NEW_ENTRY="- **${TODAY}**：${FILES}"
-if ! grep -qF "${FILES}" PROGRESS.md 2>/dev/null; then
+# 5. Build description: prefer commit messages, fall back to filenames
+if [ -n "$TODAY_COMMITS" ]; then
+  DESCRIPTION=$(echo "$TODAY_COMMITS" | tr '\n' '; ' | sed 's/; $//')
+else
+  DESCRIPTION="$FILES"
+fi
+
+# 6. Append to PROGRESS.md (avoid duplicate entries)
+NEW_ENTRY="- **${TODAY}**：${DESCRIPTION}"
+if ! grep -qF "${DESCRIPTION}" PROGRESS.md 2>/dev/null; then
   echo "$NEW_ENTRY" >> PROGRESS.md
 fi
 
 # Update timestamp
 sed -i '' "s/^> 最后更新：.*/> 最后更新：${TODAY}/" PROGRESS.md
 
-# 5. Commit and push
+# 7. Commit and push
 git add .
 if git diff --cached --quiet 2>/dev/null; then
   exit 0  # Nothing to commit
 fi
 
-git commit -m "chore: 自动记录项目进度 — ${FILES}" 2>/dev/null || true
+git commit -m "chore: 自动记录项目进度 — ${DESCRIPTION}" 2>/dev/null || true
 git push 2>/dev/null || true
